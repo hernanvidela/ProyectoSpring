@@ -18,7 +18,7 @@ import com.example.demo.Service.StarService;
 
 @Controller
 @RestController
-@RequestMapping(path = "api/v1/planets")
+@RequestMapping(path = "api/v1/stars")
 public class StarController {
 
 	private StarService starService;

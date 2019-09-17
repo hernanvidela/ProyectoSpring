@@ -69,7 +69,7 @@ public class StarService {
 		star.setId(starDTO.getId());
 		star.setName(starDTO.getName());
 		star.setDensity(starDTO.getDensity());	
-		star.setPlaneta(star.getPlaneta());
+		star.setPlaneta(starDTO.getPlaneta());
 		try {			
 			starRepository.save(star);			
 		} catch (Exception e) {						
@@ -85,7 +85,7 @@ public class StarService {
 			Star star = temp.get();
 			star.setName(starDTO.getName());
 			star.setDensity(starDTO.getDensity());
-			star.setPlaneta(star.getPlaneta());
+			star.setPlaneta(starDTO.getPlaneta());
 			starRepository.save(star);		
 			starDTO.setId(star.getId());		
 		} catch (Exception e) {			

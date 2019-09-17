@@ -71,7 +71,7 @@ public class PlanetService {
 		planet.setId(planetDTO.getId());
 		planet.setName(planetDTO.getName());
 		planet.setSize(planetDTO.getSize());
-		planet.setEstrellas(planet.getEstrellas());
+		planet.setEstrellas(planetDTO.getEstrellas());
 		try {			
 			planetRepository.save(planet);			
 		} catch (Exception e) {						
@@ -87,7 +87,7 @@ public class PlanetService {
 			Planet planet = temp.get();
 			planet.setName(planetDTO.getName());
 			planet.setSize(planetDTO.getSize());
-			planet.setEstrellas(planet.getEstrellas());
+			planet.setEstrellas(planetDTO.getEstrellas());
 			planetRepository.save(planet);		
 			planetDTO.setId(planet.getId());		
 		} catch (Exception e) {			
