@@ -6,7 +6,7 @@ public class StarDTO {
 	private int id;
 	private String name;
 	private double density;
-	private Planet planeta;
+	
 	
 	
 	public int getId() {
@@ -30,12 +30,6 @@ public class StarDTO {
 	public void setDensity(double density) {
 		this.density = density;
 	}
-	public Planet getPlaneta(){
-		return planeta;
-	}
-	public void setPlaneta(Planet planeta) {
-		
-		this.planeta=planeta;
-	}
+	
 	
 }

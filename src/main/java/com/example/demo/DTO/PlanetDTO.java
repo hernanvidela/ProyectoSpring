@@ -9,7 +9,7 @@ public class PlanetDTO {
 	private int id;
 	private String name;
 	private double size;
-	private List<Star> estrellas;
+	private Star estrella;
 	
 	public PlanetDTO() {
 		
@@ -38,12 +38,12 @@ public class PlanetDTO {
 		this.size = size;
 	}
 		
-	public List<Star> getEstrellas(){
-		return estrellas;
-	}
-	public void setEstrellas(List<Star> estrellas) {
+	public Star getEstrella() {
 		
-		this.estrellas=estrellas;
+		return estrella;
+		}
+	public void setEstrella(Star estrella) {
+		this.estrella=estrella;
 	}
 	
 }

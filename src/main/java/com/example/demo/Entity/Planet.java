@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -29,8 +30,9 @@ public class Planet {
 	@Column(name="planet_size")
 	private double size;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Star> estrellas = new ArrayList();
+	@ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "estrella_fk_planeta")
+    private Star estrella;
 	
 	public Planet() {
 		
@@ -59,12 +61,12 @@ public class Planet {
 	public void setSize(double size) {
 		this.size = size;
 	}
-	public List<Star> getEstrellas(){
-		return estrellas;
-	}
-	public void setEstrellas(List<Star> estrellas) {
+public Star getEstrella() {
 		
-		this.estrellas=estrellas;
+		return estrella;
+		}
+	public void setEstrella(Star estrella) {
+		this.estrella=estrella;
 	}
 	
 }

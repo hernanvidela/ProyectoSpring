@@ -29,9 +29,7 @@ public class Star {
 	@Column(name="star_density")
 	private double density;	
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "estrella_fk_planeta")
-    private Planet planeta;
+	
 	
 	public Star() {
 		
@@ -57,13 +55,6 @@ public class Star {
 	}
 	public void setDensity(double density) {
 		this.density = density;
-	}
-	public Planet getPlaneta(){
-		return planeta;
-	}
-	public void setPlaneta(Planet planeta) {
-		
-		this.planeta=planeta;
 	}
 	
 }
