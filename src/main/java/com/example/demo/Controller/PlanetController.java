@@ -1,9 +1,15 @@
 package com.example.demo.Controller;
 
+
+
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.repository.support.Repositories;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,87 +20,77 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.PlanetDTO;
+import com.example.demo.Entity.Star;
 import com.example.demo.Service.PlanetService;
+import com.example.demo.Service.StarService;
+import com.example.exception.StatusException;
 
 @Controller
 @RestController
 @RequestMapping(path = "api/v1/planets")
 public class PlanetController {
 
-	private PlanetService planetService;
-	
+	PlanetService planetService;
+
 	public PlanetController(PlanetService planetService) {
 		this.planetService = planetService;
 	}
-
-	//localhost:9000/api/v1/planets/{id}
-	@GetMapping(path="/{id}")
-	public PlanetDTO getOne(@PathVariable int id) {
-
-		
-		
-		return
-ResponseEntity.status(200).body(planetService.getOne(id)).getBody();
+	
+	@GetMapping(path = "/{id}")	
+	@CrossOrigin(origins = "*")	
+	public ResponseEntity getOne(@PathVariable int id) {
+		try {
+			return ResponseEntity.status(200).body(planetService.getOne(id));
+		} catch (StatusException e) {
+			return e.getResponseStatus();
+		}
 	}
 	
-	//localhost:9000/api/v1/planets/
-	@GetMapping(path="/")
-	public List<PlanetDTO> getAll() {
-	//	return planetService.getAll();
-		return ResponseEntity.status(200).body(planetService.getAll()).getBody();
+	@GetMapping(path = "/")	
+	@CrossOrigin(origins = "*")	
+	public ResponseEntity getAll(){
+		try {
+			return ResponseEntity.status(200).body(planetService.getAll());
+		} catch (StatusException e) {
+			return e.getResponseStatus();
+		}
 	}
 	
-	@PostMapping(path="/")
-	public ResponseEntity post(@RequestBody PlanetDTO planetDTO) {
-		
-		PlanetDTO result = new PlanetDTO();
-		
+	@PostMapping(path = "/")
+	@CrossOrigin(origins = "*")	
+	public ResponseEntity post(@RequestBody PlanetDTO planetDTO){
+		PlanetDTO rst = new PlanetDTO();
 		try {
 			
-			result = planetService.post(planetDTO);
-			
-		} catch (Exception e) {
-
+			return ResponseEntity.status(201).body(planetService.post(planetDTO));
+		
+		} catch (StatusException e) {
+			return e.getResponseStatus();
 		}
-		
-		return ResponseEntity.status(201).body(result);
-		
 	}
 	
 	@PutMapping(path = "/{id}")
-	public ResponseEntity put(@RequestBody PlanetDTO planetDTO, @PathVariable int id) {
-		
-		PlanetDTO result = new PlanetDTO();
-		
+	@CrossOrigin(origins = "*")	
+	public ResponseEntity put(@RequestBody PlanetDTO planetDTO,@PathVariable int id) {
+		PlanetDTO rst = new PlanetDTO();
 		try {
-			
-			result = planetService.put(planetDTO, id);
-			
-		} catch (Exception e) {
-
-		}
-		
-		planetDTO.setId(result.getId());
-		
-		return ResponseEntity.status(201).body(planetDTO);
-		
+			rst = planetService.put(planetDTO, id);
+			return ResponseEntity.status(201).body(planetDTO);
+		} catch (StatusException e) {
+			return e.getResponseStatus();
+		}		
 	}
 	
-	@DeleteMapping(path = "/{id}")
+	@DeleteMapping(path = "/{id}")	
+	@CrossOrigin(origins = "*")	
 	public ResponseEntity delete(@PathVariable int id) {
-		
-		boolean result = planetService.delete(id);
-		
-		if(result) {
-			return ResponseEntity.status(204).body("");
-		}
-		else {
-			return ResponseEntity.status(204).body("No funciona");
-		}
-		
-		
+		boolean rstEstado;
+		try {
+			planetService.delete(id);
+			return ResponseEntity.status(204).body("{\"Successful\": \"Correctly removed.\"}");
+		} catch (StatusException e) {
+			return e.getResponseStatus();
+		} 
 		
 	}
-	
-	
 }

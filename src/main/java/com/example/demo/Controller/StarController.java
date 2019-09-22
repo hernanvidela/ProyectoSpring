@@ -2,8 +2,12 @@ package com.example.demo.Controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,88 +17,75 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.DTO.PlanetDTO;
 import com.example.demo.DTO.StarDTO;
 import com.example.demo.Service.StarService;
+import com.example.exception.StatusException;
 
 @Controller
 @RestController
 @RequestMapping(path = "api/v1/stars")
 public class StarController {
+	StarService starService;
 
-	private StarService starService;
-	
 	public StarController(StarService starService) {
 		this.starService = starService;
 	}
-
-	//localhost:9000/api/v1/planets/{id}
-	@GetMapping(path="/{id}")
-	public StarDTO getOne(@PathVariable int id) {
-
-		
-		
-		return
-ResponseEntity.status(200).body(starService.getOne(id)).getBody();
-	}
 	
-	//localhost:9000/api/v1/planets/
-	@GetMapping(path="/")
-	public List<StarDTO> getAll() {
-	//	return starService.getAll();
-		return ResponseEntity.status(200).body(starService.getAll()).getBody();
-	}
-	
-	@PostMapping(path="/")
-	public ResponseEntity post(@RequestBody StarDTO starDTO) {
-		
-		StarDTO result = new StarDTO();
-		
+	//https://www.baeldung.com/spring-response-entity
+	@GetMapping(path = "/{id}")
+	@CrossOrigin(origins = "*")	
+	public ResponseEntity getOne(@PathVariable int id) {
 		try {
-			
-			result = starService.post(starDTO);
-			
-		} catch (Exception e) {
-
+			return ResponseEntity.status(200).body(starService.getOne(id));
+		} catch (StatusException e) {
+			return e.getResponseStatus();
 		}
-		
-		return ResponseEntity.status(201).body(result);
-		
+	}
+	
+	@GetMapping(path = "/")
+	@CrossOrigin(origins = "*")	
+	public ResponseEntity getAll(){
+		try {
+			return ResponseEntity.status(200).body(starService.getAll());
+		}catch (StatusException e) {
+			return e.getResponseStatus();
+		}
+	}
+	
+	@PostMapping(path = "/")
+	@CrossOrigin(origins = "*")	
+	public ResponseEntity post(@RequestBody StarDTO starDTO) {
+		StarDTO rst = new StarDTO();
+		try {
+			rst = starService.post(starDTO);
+			return ResponseEntity.status(201).body(rst);
+		}catch (StatusException e) {
+			return e.getResponseStatus();
+		}
 	}
 	
 	@PutMapping(path = "/{id}")
-	public ResponseEntity put(@RequestBody StarDTO starDTO, @PathVariable int id) {
-		
-		StarDTO result = new StarDTO();
-		
+	@CrossOrigin(origins = "*")	
+	public ResponseEntity put(@RequestBody StarDTO starDTO,@PathVariable int id) {
+		StarDTO rst = new StarDTO();
 		try {
-			
-			result = starService.put(starDTO, id);
-			
-		} catch (Exception e) {
-
+			rst = starService.put(starDTO, id);
+			return ResponseEntity.status(201).body(starDTO);
+		} catch (StatusException e) {
+			return e.getResponseStatus();
 		}
-		
-		starDTO.setId(result.getId());
-		
-		return ResponseEntity.status(201).body(starDTO);
 		
 	}
 	
-	@DeleteMapping(path = "/{id}")
+	@DeleteMapping(path = "/{id}")	
+	@CrossOrigin(origins = "*")	
 	public ResponseEntity delete(@PathVariable int id) {
-		
-		boolean result = starService.delete(id);
-		
-		if(result) {
+		try {
+			starService.delete(id); 
 			return ResponseEntity.status(204).body("");
-		}
-		else {
-			return ResponseEntity.status(204).body("No funciona");
-		}
-		
-		
-		
+		}  catch (StatusException e) {
+			return e.getResponseStatus();
+		} 
 	}
-	
-	
 }
